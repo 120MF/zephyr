@@ -31,6 +31,10 @@ void soc_early_init_hook(void)
 {
 	sys_cache_instr_enable();
 
+	/* Invalidate the data cache before enabling to avoid stale tags */
+	(void)sys_cache_data_invd_all();
+	sys_cache_data_enable();
+
 	/* Update CMSIS SystemCoreClock variable (HCLK) */
 	/* At reset, system core clock is set to 32 MHz from HSI with a HSIDIV = 2 */
 	SystemCoreClock = 32000000;
